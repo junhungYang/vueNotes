@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+    <style>
+        #box {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <router-link to="/one">One</router-link>
+        <router-link to="/two">Two</router-link>
+        <router-view></router-view>
+        <router-view name="a"></router-view>
+        <router-view name="b"></router-view>
+    </div>
+    <template id="a">
+        <div>第一个router</div>
+    </template>
+    <template id="b">
+        <div>第二个router
+            <router-view></router-view>
+        </div>
+    </template>
+    <template id="c">
+        <div>
+            user:{{ $route.params.id }}
+        </div>
+    </template>
+    <template id="d">
+        <div>
+            第三个router
+        </div>
+    </template>
+
+    <script>
+        var Foo = {
+            template: '<div>foo</div>'
+        };
+        var Bar = {
+            template: '<div>bar</div>'
+        }
+        var routes = [{
+                path: "/one",
+                // name: "one",
+                component: {
+                    template: '#a',
+                },
+                // components: {
+                //     a: Foo,
+                //     b: Bar
+                // }
+            },
+            {
+                path: "/two",
+                redirect: '/three',
+                component: {
+                    template: '#b'
+                },
+                // children: [{
+                //     path: ":id",
+                //     component: {
+                //         template: "#c"
+                //     }
+                // }]
+            }, {
+                path: "/three",
+                alias: '/hello',
+                component: {
+                    template: '#d'
+                }
+
+            }
+        ];
+        var router = new VueRouter({
+            routes
+        });
+        new Vue({
+            el: "#box",
+            router
+        })
+    </script>
+
+</body>
+
+</html>

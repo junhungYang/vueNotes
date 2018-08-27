@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-com></my-com>
+    </div>
+    <script>
+        var myMixin = {
+            methods: {
+                change() {
+                    this.msg = 'hello Yangjunxing'
+                }
+            }
+        }
+        var myCom = {
+            mixins: [myMixin],
+            template: `
+                    <div>
+                        <div>{{msg}}</div>
+                        <button @click="change">change</button>
+                    </div>
+            `,
+            data() {
+                return {
+                    msg: 'hello Word'
+                }
+            },
+            methods: {
+                // change() {
+                //     this.msg = "nononono"
+                // }
+            }
+        }
+        // Vue.mixin({
+        //     created() {
+        //         console.log('全局混入')
+        //     }
+        // })
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                myCom
+            }
+        })
+
+
+        /*
+            混入
+            混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。混入对象可以包含任意组件选项。
+            当组件使用混入对象时，所有混入对象的选项将被混入该组件本身的选项。
+            简单来说就是混入对象可以想象成一个工具可以安插至任何一个组件里，使它本身具有的功能成为该组件的功能
+            创建的混入对象并须安插至组件内的mixins属性上
+
+            当组件上data对象与混入对象里的data对象在属性上有冲突时，以组件上的data对象内的属性将更为优先
+            同名钩子函数产生冲突时，将会被混为一个数组，组件对象和混入对象内的钩子都会被执行，但混入对象的钩子将先被执行
+            值为独享的选项。
+            值为对象的选项，如methods,components，directives，将被混为同一个对象，两个对象键名冲突时，取组件对象的键值对。
+
+            全局混入Vue.mixin({})
+            可以全局注册混入独享。但应谨慎使用!!全局混入对象将作用于之后所创建的所有Vue实例(包括第三方模版)
+        */
+    </script>
+</body>
+
+</html>

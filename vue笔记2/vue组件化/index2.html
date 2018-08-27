@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .content {
+            width: 300px;
+            height: 300px;
+            background: coral;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-inp v-bind="bindmsg"></my-inp>
+        <!-- <my-inp :msg="msg" :reg="reg" :sucmsg="sucmsg" :errmsg="errmsg"></my-inp> -->
+    </div>
+    <script>
+        var myInp = {
+            template: `
+                <div>
+                    <span>{{msg}}</span>
+                    <input type="text" @keyup.enter.space="dataCheck">
+                    <span>{{result}}</span>
+                </div>
+                `,
+            data() {
+                return {
+                    result: ''
+                }
+            },
+            props: {
+                msg: {
+                    type: String,
+                    default: ''
+                },
+                reg: {
+                    type: RegExp,
+                    default: null
+                },
+                sucmsg: {
+                    type: String,
+                    default: '成功'
+                },
+                errmsg: {
+                    type: String,
+                    default: '失败'
+                }
+            },
+            methods: {
+                dataCheck(e) {
+                    if (this.reg.test(e.target.value)) {
+                        this.result = this.sucmsg
+                    } else {
+                        this.result = this.errmsg
+                    }
+                }
+            }
+        }
+        new Vue({
+            el: '#app',
+            data: {
+                bindmsg: {
+                    msg: '请输入qq邮箱',
+                    reg: /@qq.com$/,
+                    sucmsg: '输入成功',
+                    errmsg: '格式错误，请重新输入'
+                }
+            },
+            components: {
+                myInp
+            }
+        })
+
+        // 数据传递
+
+        // 父传子
+
+        // 通过在组件标签上挂载 v-bind:xxx = "xxx" , 然后通过组件配置项props属性，以一个数组的方式接收xxx,
+        // 即可把直接父级的数据传递至子组件中，然后便可在子组件的template模版内进行数据绑定，需要注意的是xxx必须为
+        // 直接父级中data对象内的需要进行传递的属性的属性名.
+
+        // props还可以以一个对象来接收从直接父级里传过来的值，如 xxx:{ type:String; required:true; default:'true'}
+        // type规定传过来的值应该是什么类型的值,当然即使所传的值不服合type的要求，该值也可以接收得到，只不过浏览器会弹出注意信息
+        // required规定，当没有进行传值时，在浏览器控制台中是否产生注意信息，default规定xxx属性的默认值。
+
+        // 数据的重写
+        // 虽然由直接父级传至组件上的原始值，在组件上进行修改并不会影响到直接父级中的该原始值，但vue依然不建议我们去这么做，
+        // 正常来说在组件中应该先把传递过的数据另外赋值至一个data内的属性，然后使用该data内的属性，修改也是修改该data内的属性
+        // 假如从直接父级中传过来的是一个引用值，那么当组件上对该引用值进行重写后，在直接父级中的该引用值也会被重写
+
+        // 在数据传递中只能由直接父级传递给其子级，而不能有间接父级传递给子级，除非先从间接父级传递给中间层，再由中间层传递给其子级
+
+        // 子传父
+        // 子组件往父级传值的核心是，通过在组件内执行this.$emit('eventName',data)触发定义在组件标签上的事件，然后定义在父级的
+        // 事件处理函数通过参数的形式接收从组件内传递过来的数据,再赋值于自己的相关属性，即可完成子组件往父级传值的过程，用于进行
+        // 数据传递的事件最好是自定义事件，这使得事件只能由$emit事件进行触发，解决了非定义事件进行传值时可能造成的执行混乱
+
+        // 在由父级传值给子组件时假如想传一个对象的话那么应该在子组件的标签上绑定v - bind = "objName", 在子组件中接收或使用该对象内
+        // 的属性时， 无需以传过来的对象进行调用， 即只需要改变子组件上数据的绑定方式， 在子组件内部进行调用时与父级往子组件单个单个
+        // 进行传值时的数据调用方式一样
+    </script>
+</body>
+
+</html>

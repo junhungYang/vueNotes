@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="./StoragePro.js"></script>
+    <style>
+        * {
+            list-style: none;
+        }
+
+        #app {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -200px)
+        }
+
+        input {
+            width: 500px;
+
+        }
+
+        ul {
+            width: 500px;
+            border: 1px solid rgb(155, 155, 155);
+            padding: 0 20px;
+            margin-top: 5px;
+        }
+
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgb(155, 155, 155)
+        }
+
+        ul li:last-of-type {
+
+            border-bottom: 0 !important;
+        }
+
+        span {
+            float: right;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="value" @keyup.enter="add(value)">
+        <ul v-show="show">
+            <li v-for="(item,index) in list" class="clearfix">
+                {{item}}
+                <span class="glyphicon glyphicon-ok" :style="select ? {color: 'tomato'} : ''" @click="select = !select"></span>
+                <span class="glyphicon glyphicon-remove" @click="removeItem(index)"></span>
+            </li>
+        </ul>
+    </div>
+    <script>
+        (function () {
+            var str = storagePro.get('todolist')
+            if (str) {
+                arr = str.split(',');
+            } else {
+                arr = false
+            }
+        })()
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                value: "hello world",
+                show: arr,
+                list: arr || [],
+                select: false,
+                itemShow: true
+            },
+            methods: {
+                add(value) {
+                    this.list.push(value)
+                    this.show = true;
+                    storagePro.set('todolist', this.list)
+                },
+                removeItem(index) {
+                    this.list.splice(index, 1);
+                    storagePro.set('todolist', this.list);
+                    if (this.list.length == 0) {
+                        this.show = false;
+                    }
+                }
+            },
+
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-com :msg-father="msgFather"></my-com>
+        <!-- <my-com1></my-com1> -->
+        <input type="text" v-model="value" @input="change">
+    </div>
+    <script>
+        //组件化
+
+        //全局组件,
+        var com = Vue.component('myCom', {
+            props: ['msgFather'],
+            //组件的模版通过template属性进行创建
+            template: `<div>{{msgFather}}</div>`,
+            data() {
+                return {
+                    // msg: 'hello'
+                }
+            }
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msgFather: 'Father',
+                value: 'hello'
+            },
+            components: {
+                //局部组件
+                myCom1: {
+                    template: `<div>myCom1</div>`
+                }
+            },
+            methods: {
+                change() {
+                    this.value = "helo"
+                }
+            }
+        })
+
+        //全局组件, 
+        // 'myCom'为组件名，{}为相关配置项, 
+        // 若想使用组件，必须在全局进行实例化，即创建一个vue实例(具有el属性)，并在vue环境下才能进行使用
+
+        //局部组件 
+        //vue实例的components属性内通过创建对象的方式可以创建局部组件，属性名为该组件的组件名，{}为相关配置项 
+        //为了方便操作，一般会把局部组件先在全局中通过一个对象创建出来，然后再把该对象挂载至vue实例里的components属性内
+
+        //组件中的data属性
+        //在组件中用于声明差值语法的data不能像在vue实例里创建时，通过一个对象去创建(data:{})，而应该通过一个函数去创建data(){}
+        //而这个data函数里需要做的就是return一个对象，而我们想进行差值语法使用的属性应该声明在该返回的对象里。
+
+        //之所以在组件中data必须要以一个函数的形式进行声明的原因是，我们会发现在vue实例里data内的属性，是可以在整个vue模版中
+        //贯穿使用的，也就是说只要当前环境在vue内无论该差值模版在哪里使用都是可行的，同时在vue实例创建的模版中只要有一个地方
+        //对差值模版进行了修改，那么其他地方的差值模版的值也会发生变化，也就是说它是一种贯穿的状态
+        //而组件化的思想是高内聚，解偶合，解耦的其中一个体现即每一个组件它是相互独立并且不互相依赖的，而通过在vue实例中的data
+        //直接以一个对象去创建的话，那么假如该组件进行了多次复用，那么他们将共用了同一个data,其中一个组件的data发生改变的话
+        //那么其余的组件中的data也将发生改变，这与闭包的其中一个缺点一样，它有可能导致多个函数共用一个变量
+        //而通过data函数返回一个对象的方式，在同一组件进行多次复用时，每一个组件都会执行自己的data返回，然后把返回的对象作为
+        //属于自己的data对象，便很好地避免了这种共用同一个data的状况，但就目前而已，我们没法进行验证的原因在于，并没有一种方法
+        //可以单独操作一个组件多次复用后的其中一个
+
+        //组件中可以再引入组件，全局组件可以在任何一个组件中被引入使用，而局部组件只能使用于它所在定义的组件内
+    </script>
+</body>
+
+</html>

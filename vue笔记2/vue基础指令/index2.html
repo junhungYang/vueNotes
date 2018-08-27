@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .item {
+            width: 200px;
+            height: 200px;
+        }
+
+        .green {
+            background: green;
+        }
+
+        .blue {
+            background: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="item green" v-show="false"></div>
+        <div class="item blue" v-if="true">{{result}}</div>
+        <input type="text" :value="value">
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                show: 'content',
+                type: 'radio',
+                value: 'hello'
+            },
+            methods: {
+
+                result() {
+                    console.log("methods内的result执行")
+                    return this.increase > 5 ? "greater than 5" : "less than 5"
+                }
+
+            }
+        })
+
+        // v-bind指令
+        // v-bind用于动态操作标签属性
+
+        // :class 
+        // v-bind:class可以动态操作元素的类名，同时它还可以以一个对象的形式集中操作多个class名，
+        // 该对象内的属性名应该为需要进行动态操作的class类名，属性值应该为布尔值，true代表着该元素
+        // 有该class类，自然也就会偶该class类里面所包含的样式了，而false代表该元素不具备该class类
+        // 同样那么该元素便不具备该class类里面的样式，通过控制布尔值的转换可实现元素样式状态的切换。
+        // 同时:class的值还可接受一个数组，用于对多个类名的集中操作
+        // 如 :class="{red:true,'size-18':false}" ; :class=["red","size-18"]
+
+        // :style
+        // v-bind:style可动态绑定行间属性，
+        // 如 :style="styles" 或 :style = "[styles,{fontWeight:600}]" ; data: { styles:{color:'red';display:'flex'} }
+
+        // :type
+        // v-bind:type可动态操作type属性
+        // 如 :type="type" ; data: {type:'text'}
+
+        // :readonly = "flag" ;data: {flag:true} 只读
+
+
+
+        // v-if v-else v-else-if条件渲染
+        // 其基本原理与js中的if语句相同，当v-if的值为true时，绑定有v-if的元素会渲染至页面,否则绑定了v-else的元素
+
+
+
+        // v-show 条件展示
+        // 当v-show的值为true时，元素展示，相反，元素不展示。
+        // v-show与v-if的区别在于，当v-show的值为false时，它会给元素添加上一个行间样式display:none
+        // 而当v-if的值为false时，该dom元素将压根不会被渲染至页面
+
+
+
+        //v-for循环
+        //v-for会对目标数组进行循环,然后生成相对应的dom元素，其表达式与for in 类似，
+        //在遍历数组时，可接收两个变量，1st为值，2st为索引，在遍历对象时，可接收三个变量, 1st为属性值，2st为属性名，3st为索引
+        //拓展 可以通过 v-for="num in 100"的形式生成100个元素,其次 v-for="str in 'abcd'", 'abcd' 将会发生隐式类型转换，转换为数组
+
+        //数组操作
+        //vue对原生中如push,reverse等六个数组的方法进行了从写，当产生push操作时事实上创建了一个新数组进行赋值
+        //而一般的数组赋值如 listArr[5] = 'abc' ,vue将无法检测到listArr的变化，因为listArr是一个数组，在引用值赋值中，
+        //会改变引用值的内部但不会改变引用值自身，而vue只会检测到该引用值是否被替换，而无法检测到引用值的内部是否发生变化
+
+        //假如想改变数组内的某个值，而又能使vue能监听到数组发生了变化的话可以通过以下方式对某一个特定的值进行替换，
+        //需要注意的是假如该操作是在vue对象外部进行操作的话，那么应该把this转换为vue对象的引用
+        //Vue.set(this.list。。Arr,oldItem,newItem)
+        //this.$set(this.listObj,oldProName,newProVal)
+
+        // v-model双向数据绑定
+        // v-model只适用于具有文本输入的元素，如input框。
+        // 首先v-model具有:value的功能，即可把在data内定义了的属性动态挂载至:value上，让该属性的值作为input框的默认文本
+        // 在:value指令中，只可以通过js操作改变input框内的值，即改变data内属性的值，vue实例中的操作作为起点，input框输出作为终点
+        // 而在v-model中，不仅可以vue实例作为起点，input框输出作为终点，还可以通过input框输入作为起点，data内属性的被修改作为终点
+        // 而事实上无论哪一个作为终点其实都只是js操作而已,在原生js中可以通过input元素的value属性动态改变input框上的值
+        // 也可以直接通过input框的输入操作，改变input的value属性值，所以说v-model实际上是:value与@input的合体
+        // 一句话总结v-model，无论是在vue实例中还是在页面中，都可以进行对其绑定的属性的重写操作。
+    </script>
+</body>
+
+</html>

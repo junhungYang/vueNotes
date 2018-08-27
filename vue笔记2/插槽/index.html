@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .orange,
+        .tomato {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+        }
+
+        .orange {
+            background: orange;
+        }
+
+        .tomato {
+            background: tomato
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-component :listarr="listarr">
+            <!-- <div class="orange" slot="orange">orange</div>
+            <div class="tomato" slot="tomato">123456</div>
+            <div class="orange" slot="orange">baby</div> -->
+            <template slot="list" slot-scope="obj">
+                <li v-for="item in obj.result">{{item}}</li>
+            </template>
+
+        </my-component>
+    </div>
+    <script>
+        const myComponent = {
+            template: `
+                <div>
+                    
+                    <!-- <slot name="orange"/>
+                    <slot name="tomato"/> -->
+                    <div>myComponent</div>
+                    <ul>
+                        <slot  :result="result" name="list" ></slot>
+                    </ul>
+                    <slot>1213464897616</slot>
+                    
+                  
+                </div>
+            `,
+            data() {
+                return {
+                    result: [1, 2, 3]
+                }
+            },
+            props: {
+                listarr: {
+                    type: Array
+                }
+            }
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                myComponent
+            },
+            data: {
+                listarr: [{
+                        title: 'a'
+                    },
+                    {
+                        title: 'b'
+                    },
+                    {
+                        title: 'c'
+                    },
+                    {
+                        title: 'd'
+                    },
+                    {
+                        title: 'e'
+                    }, {
+                        title: 'f'
+                    }
+                ]
+            }
+        })
+
+        /*
+            slot插槽用于，当我们希望直接在html结构上对组件进行改写时，slot插槽可以使组件的灵活性增强实现万能组件以及组件的封装，
+            slot标签就如同函数的形参，而在组件标签内的内容如同实参 组件标签内内容的不同组件最终所呈现的使用效果也会不同。
+            
+            slot标签应该安置与组件的template模版类，而我们在组件标签里另外输入的内容就像插头一样，插座的位置在哪里，
+            插头就会被插至哪里，也就是说slot标签所在的位置即插头所在的位置
+
+            具名插槽
+            简单来说具名插槽是一个有专属名字的插槽，可以理解为这个插槽只允许某个或某些人来插，而没有被允许的其他人不能使用该插槽
+            通过在slot标签上添加上name属性，并定义name值，该slot标签就成了一个具名插槽，而通过在组件标签内的标签上定义slot属性
+            并关联某一个slot标签上的name属性值，该组件标签内的标签将会被安插至该插槽上，同样最终dom元素所在的位置，不由位于组件
+            标签内的标签的摆放位置决定，而由template属性内的slot标签的摆放位置决定。而没有声明slot属性的标签将被统一安放至
+            具名插槽弥补了单纯的slot标签只能对数据进行集中操作无法个别操作的缺陷
+
+            假如在组件标签内的其中一个标签已经定义了slot属性，但在template模版中没有带有相对应的name属性值的具名插槽的话，
+            即使在template内有公共插槽，该定义了slot属性的标签依然不会被渲染至页面
+            而假如在template模版内有未被使用的插槽那么假如该slot标签夹带着文本的话，文本将会被渲染至页面
+
+            作用域插槽
+            只有template模版内的dom结构可以直接使用组件内定义的属性，由于slot标签本身不进行dom结构渲染，所以它即使使用了组件内的
+            属性，并且通过差值语法使用了该属性依然是不会渲染至页面的，而在html结构中的组件标签内是无法直接使用组件内的属性的，它
+            必须通过组件给它传值后它才能使用组件内的属性，那么假如想实现组件往安插在slot插槽上的标签进行传值的话，必须通过以下步骤
+            首先像vue实例往组件传值一样，必须在组件标签上定义 :data="data"，然后在组件内用props对象进行接收，组件想往插头标签传值也一样
+            它首先必须在插槽上定义 :data = "data",然后在插头标签中通过 slot-scope="xxx" 进行接收，slot-scope与props原理相同，
+            都是用于接收传递过来的数据的一个属性，只有这样，在插头标签中才能使用由组件传过来的数据
+        */
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background: tomato;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        $
+        <span>{{money}}</span> : ￥
+        <span>{{usd}}</span>
+        <div>{{msg}}</div>
+        <div class="box" @click="bindEvent('yang',$event)"></div>
+    </div>
+    <script>
+        var vm = new Vue({
+            //1.操纵目标
+            el: '#app',
+
+            //页面变量(属性被隐性安插至当前vue实例)
+            data: {
+                flag: false,
+                money: 1,
+                msg: 'hello world'
+            },
+
+            //事件函数区(事件的this指向当前vue实例)
+            methods: {
+                bindEvent: function (name, e) {
+                    console.log(name)
+                    console.log(e)
+                },
+            },
+            computed: {
+                usd: {
+                    get() {
+                        return this.money * 6
+                    }
+
+                }
+            },
+            watch: {
+                usd(newVal, oldVal) {
+                    console.log('sdalkfjsa')
+                }
+            }
+
+            // template: '<p>hello world</p>'
+        })
+
+        //通过new Vue()的形式会在页面中创建一个vue对象
+
+        // 1.el属性
+        // el属性可用于把当前vue对象挂载至某一dom元素上，通过创建el属性，可在vue对象内生成一个$el属性，
+        // 而$el的值则为当前vue对象挂载至的dom元素。
+
+        // 2.data属性
+        // 需要进行数据绑定的页面内容应存放于data对象内，通过差值语法'{{msg}}'可实现把data对象内的属性
+        // 动态绑定至vue模版中然后再渲染至页面中，在data内的属性通过new Vue的过程最终会绑定至vue对象内
+        // 所以说假如想在传入对象内调用data内的属性的话应当通过 'this.' 的方式，此时的this所指向的对象
+        // 即为当前vue对象,当然也可以不通过'this.xxx'的方式，而通过'this.$data.xxx',但一般情况下不会这样使用
+
+        // 3.template属性
+        // template会根据el所挂载的地方，覆盖原有的html模版，即el所挂载的dom结构，生成由template创建的模版
+
+        // 4.computed属性
+        // computed用于定义派生属性，派生属性也可称之为计算属性，它的定义即某一属性它并不是完全由其自身的值所产生的
+        // 它依赖其他的在data内定义了的属性并根据该在data内定义了的属性进行一些运算得出的结果才是真正属于派生属性的属性值
+        // 派生属性的定义形式为一个函数，并且该函数return 派生属性的计算结果，在模版中通过差值语法{{...}}的形式，计算结果
+        // 将会被reutrn至双花括号内，进而渲染至页面，由于它是派生出来的属性，所以当它所依据的属性即在函数内部进行运算的某个
+        // 在data内定义了的属性发生变化时，注定了给派生属性的值也应该发生变化。
+
+        // 派生属性的取和写
+        // 派生属性同样可以通过 'this.fnName' 的形式进行读取，它不会返回该派生属性所绑定的函数，而是直接返回函数的返回值
+        // 事实上对派生属性进行重写是没有意义的，因为假如派生属性的依据是data内的属性，而派生属性发生改变的依据应该是data内的
+        // 属性发生改变时，那么直接改变data的值就可以了，但是假如真的想直接修改派生属性的值的话也可以通过把派生属性定义为一个对象
+        // 而不是一个函数，然后在对象内分别声明get和set方法,get用于返回派生属性的值，然后set接收一个参数用于对该派生属性所依赖的
+        // data内的属性进行赋值。那么在调用该set方法时传入的值便可以改变该派生属性所因爱的data内的属性，从而改变自己。
+        // 其实还是觉得这东西没太大意义
+
+
+        // 5.watch属性
+        // watch可以直接监听data内的属性，并且当某一个属性发生变化时，监听该属性的函数会执行，且会接收两个参数，
+        // 第一个参数为属性改变后的值，第二个参数为属性改变前的值，监听某一属性的函数应该以该属性的属性名进行命名。
+
+        // 6.method
+
+        // vue指令
+        // v-text="data" ,v-text实际上与差值语法{{data}}的功能相同，它可以对文本内容进行渲染
+        // v-html = "<div>hello</div>" , v-html可进行结构渲染，但尽量少用，因为它容易被恶意脚本利用
+        // v-once , 只进行一次渲染，即最初的渲染，在往后的操作中，即使数据发生改变也不进行二次渲染
+
+        // v-on 事件
+        // 通过v-on:type="cb" 的方式可为某一个dom元素绑定事件，关于该事件的回调应该在传入对象中的methods区域内进行定义
+        // 在原生js中，事件回调是无法接受自定义参数的，但在vue中事件回调可以接受参数，我们可以通过 @type="cb('yang',$event)"
+        // 进行对事件回调的传参，在vue中$event是事件对象的指定属性名，同时$event的传参位置可以随意设定。
+        // 在进行简单运算时可以不创建回调而是在指令内直接进行运算，例如 @click=" (num > 0) ? num++ : num--"，num为data内声明的属性
+
+        // 事件修饰符
+        // @click.left => 鼠标左键
+        // @click.right => 鼠标右键
+        // @type.prevent => 取消默认事件
+        // @type.once => 该事件只触发一次
+        // @type.stop => 阻止事件冒泡
+
+        // @keyup.13 =>　只有keyCode为13的按键可触发事件的回调
+        // @keyup.enter => 只有enter键可触发事件的回调，同时还有esc,space，up(方向键)等的按键修饰符
+    </script>
+</body>
+
+</html>

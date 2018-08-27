@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        /* 从无到有 */
+
+        .msg-enter {
+            /* 元素起点状态 */
+            transform: translateX(-100%)
+        }
+
+        .msg-enter-to {
+            /* 元素终点状态 */
+            transform: translateX(0)
+        }
+
+
+        /* 从有到无 */
+
+        .msg-leave {
+            /* 元素终点状态 */
+            transform: translateX(0)
+        }
+
+        .msg-leave-to {
+            /* 元素起点状态 */
+            transform: translateX(-100%)
+        }
+
+        .msg-leave-active,
+        .msg-enter-active {
+            /* 过程 */
+            transition: all .5s linear
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <transition mode="out-in" name="msg">
+            <user-name v-if="flag"></user-name>
+            <pass-world v-else></pass-world>
+        </transition>
+        <transition mode="in-out">
+            <user-name v-if="flag"></user-name>
+            <pass-world v-else></pass-world>
+        </transition>
+        <button @click="flag= !flag">change</button>
+    </div>
+    <script>
+        var userName = {
+            template: `
+                <div>
+                    请输入用户名：<input type="text" />
+                </div>
+               
+            `,
+        }
+        var passWorld = {
+            template: `
+                <div>
+                    请输入密码: <input type="text" />
+                </div>
+            `
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                userName,
+                passWorld
+            },
+            data: {
+                flag: true
+            }
+        })
+
+        /*
+            transition标签可生成一个触发过渡动画的环境，包裹至它里面的组件通过特定的类选择器可实现过渡动画的展示
+            transition的mode属性可规定多个组件下的展示顺序，out-in为 正在展示的组件先消失，下一刻要展示的组件再进来，
+            in-out为下一刻要展示的组件先进入，然后正在展示的组件再消失.
+            通过改变类选择器的默认名称，其次在transition标签上声名对应的name属性值，该css动画将只针对具有相应name属性值的transition标签
+
+        */
+    </script>
+</body>
+
+</html>

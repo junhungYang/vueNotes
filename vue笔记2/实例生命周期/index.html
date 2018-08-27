@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <my-com></my-com>
+    </div>
+    <script>
+        Vue.component('myCom', {
+            template: `<div>123</div>`,
+            beforeCreate() {
+                console.log(Object.entries(this))
+            },
+            created() {
+                console.log(Object.entries(this))
+            },
+            beforeMount() {
+                console.log(Object.entries(this))
+            },
+            mounted() {
+                console.log(Object.entries(this))
+                com = this
+            }
+        })
+        var com;
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello'
+            },
+            // beforeCreate() {
+            //     console.log(Object.entries(this))
+            // },
+            // created() {
+            //     console.log(Object.entries(this))
+            // },
+            // beforeMount() {
+            //     console.log(Object.entries(this))
+            // },
+            // mounted() {
+            //     console.log(Object.entries(this))
+            // }
+        })
+
+        // 在vue实例中以'_'开头的属性为该vue实例的私有属性
+
+        /* 
+        vue实例声明周期 
+        
+        new Vue() => 
+        事件初识化，声明周期初始化 => 
+        befroCreate() =>
+        往vue实例中注入methods,data,props内属性,包括监听器watcher与实例产生关联 =>
+        created() =>
+        判断是否有el属性，没有的话执行实例原型上的$mount(el)方法(组件的情况)，然后无论是否有el属性都会进入实例中是否
+        有template属性的判断， 有的话编译template模版，没有的话编译el挂载至的模版 =>
+        beforeMount() =>
+        $el 属性生成，根据$el覆盖原来的el属性并锁定相应的dom结构,isMounted:false vue实例还未进行挂载 =>
+        mounted() =>
+        覆盖原有的dom结构，从新生成一个一模一样的dom结构，并把vue实例挂载至该新搭建的dom元素上，isMounted:true
+
+
+        beforeUdate()  updated() 
+        当数据发生变化,并且该数据是在页面中被应用的数据时，会先触发beforeUpdate()再触发updated() 
+        需要注意的是这里的updata不是对数据的updata而是对页面渲染结果的updata 
+
+
+        $destory() 
+        vue实例可通过调用原型上的$destory()方法可与其所绑定的dom结构进行解绑,此时再改变进行了数据绑定的属性时， 
+        页面上的数据将不会发生改变，但vue实例内的数据依然会发生变化.此时beforeDestroy()与destroyed将先后被执行
+
+        $mount('#app')
+        当vue实例调用原型上的$mount()方法时可使vue实例重新挂载至指定的dom元素上
+
+        vm._isBeingDestroyed属性
+        该属性表示当前的vue实例vm是否曾经被解绑过，当vue实例曾经被解绑过时其值为true,相反为false,当一个vue实例在
+        被解绑状态下从新调用$mount进行了绑定时，再执行$destroy将无法对vue实例进行解绑，也就是或当_isBeingDestroyed
+        为true的话，无法进行解绑操作，但该属性不仅可读还可写，所以可以手动把其值改变为false，便可重新进行vue实例的解绑了
+ */
+    </script>
+
+
+
+</body>
+
+</html>

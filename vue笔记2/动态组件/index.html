@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .red,
+        .blue {
+            width: 100px;
+            height: 100px;
+        }
+
+        .red {
+            background: red;
+        }
+
+        .blue {
+            background: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <keep-alive>
+            <component :is="comName"></component>
+        </keep-alive>
+
+
+
+
+        <button @click="comName = 'userName'">userName</button>
+        <button @click="comName = 'passWord'">passWord</button>
+        <button @click="comName = 'box'">box</button>
+    </div>
+    <script>
+        const userName = {
+            template: `
+                <div>
+                    请输入用户名:<input type="text">
+                </div>
+            `
+        }
+        const passWord = {
+            template: `
+                <div>
+                    请输入密码:<input type="password">
+                </div>
+            `
+        }
+        const box = {
+            template: `
+                <div :class="pro" @click="pro = 'blue'">123</div>
+            `,
+            data() {
+                return {
+                    pro: 'red'
+                }
+            },
+
+        }
+        new Vue({
+            el: '#app',
+            data: {
+                comName: 'box',
+            },
+            components: {
+                userName,
+                passWord,
+                box
+            }
+        })
+
+        /*
+            component标签
+            component标签结合:is属性可以实现动态渲染指定组件,通过把一个组件的组件名赋值于data对象内的一个属性上
+            然后再在:is上绑定该属性，该属性所知道的组件将会被渲染至页面，然后通过动态改变data兑现该内的该属性的属性值
+            即可实现对组件的动态渲染
+
+            在动态渲染input框组件的过程中，会发现之前在其中一个input框中所输入的值，在重新切换至该input组件时input框内的
+            文本内容并没有被保存下来，而假如想缓存某个元素的状态使其在下一次被渲染时依然保持之前状态的话，那么应该给component标签
+            包裹一个keep-alive标签作为父级，该标签可以使元素的状态被缓存下来
+
+        */
+    </script>
+
+</body>
+
+</html>

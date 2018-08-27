@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .red {
+            width: 100px;
+            height: 100px;
+            background: tomato
+        }
+
+        .blue {
+            width: 100px;
+            height: 100px;
+            background: blue
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <input v-model="value" type="text" v-focus:name="value">
+        <p >{{value}}</p> -->
+        <div class="red" v-focus:flag="flag"></div>
+        <button @click="flag=!flag">123</button>
+    </div>
+    <script>
+        // v-focus
+        Vue.directive('focus', {
+            bind(el, binding, vnode, oldVnode) {
+                //当指令绑定至元素上时触发
+                console.log(el, binding, vnode)
+            },
+            inserted(el, binding, vnode, oldVnode) {
+                //当指令插入至节点中时触发
+                console.log(el)
+                //实现自动聚焦
+                // el.focus()
+            },
+            update(el, binding, vnode, oldVnode) {
+                //数据发生变化时
+                console.log(binding)
+
+                if (binding.oldValue == true) {
+                    el.setAttribute('class', 'blue')
+                    //  el.setAttribute('class', '') //v-if模拟     
+                } else {
+
+                    el.setAttribute('class', 'red')
+                }
+            },
+            componentUpdated(el, binding, vnode, oldVnode) {
+                //组件发生变化时
+
+            },
+            unbind() {
+                //解绑时
+            }
+        })
+        vm = new Vue({
+            el: '#app',
+            components: {
+
+            },
+            data: {
+                flag: true
+            },
+        })
+    </script>
+</body>
+
+</html>
